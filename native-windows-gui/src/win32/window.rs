@@ -6,7 +6,7 @@ Warning. Not for the faint of heart.
 use winapi::shared::minwindef::{BOOL, UINT, DWORD, HMODULE, WPARAM, LPARAM, LRESULT};
 use winapi::shared::windef::{HWND, HMENU, HBRUSH};
 use winapi::shared::basetsd::{DWORD_PTR, UINT_PTR};
-use winapi::um::winuser::{WNDPROC, NMHDR, IDCANCEL, IDOK};
+use winapi::um::winuser::{IDCANCEL, IDOK, NMHDR, WM_SETFOCUS, WNDPROC};
 use winapi::um::commctrl::{NMTTDISPINFOW, SUBCLASSPROC};
 use super::base_helper::{CUSTOM_ID_BEGIN, to_utf16};
 use super::window_helper::{NOTICE_MESSAGE, NWG_INIT, NWG_TRAY, NWG_TIMER_TICK, NWG_TIMER_STOP};
@@ -718,6 +718,7 @@ unsafe extern "system" fn process_events(hwnd: HWND, msg: UINT, w: WPARAM, l: LP
         NWG_TIMER_STOP => callback(Event::OnTimerStop, NO_DATA, ControlHandle::Timer(hwnd, w as u32)),
         NWG_TIMER_TICK => callback(Event::OnTimerTick, NO_DATA, ControlHandle::Timer(hwnd, w as u32)),
         NWG_INIT => callback(Event::OnInit, NO_DATA, base_handle),
+        WM_SETFOCUS => callback(Event::OnWindowFocus, NO_DATA, base_handle),
         WM_CLOSE => {
             let mut should_exit = true;
             let data = EventData::OnWindowClose(WindowCloseData { data: &mut should_exit as *mut bool });

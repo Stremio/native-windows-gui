@@ -264,6 +264,9 @@ pub enum Event {
     /// When a notice is... noticed
     OnNotice,
 
+    /// When a window is being focused
+    OnWindowFocus,
+
     /// When a user clicks on the X button of a window
     OnWindowClose,
 }
